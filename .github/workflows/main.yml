@@ -5,9 +5,9 @@ on:
   push:
     branches: [ main, "*" ]
 
-workflow_dispatch: 
-  inputs:
-    logLevel:
+  workflow_dispatch: 
+    inputs:
+      logLevel:
         description: 'Log level'
         required: true
         default: 'warning'
@@ -25,12 +25,12 @@ workflow_dispatch:
         type: environment
         required: true
 
-jobs:
-  development:
-    name: Development
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
+  jobs:
+    development:
+        name: Development
+        runs-on: ubuntu-latest
+        steps:
+        - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
 
   
     runs-on: ubuntu-latest
@@ -42,8 +42,8 @@ jobs:
         run: npm install
 
   
-    runs-on: ubuntu-latest
-    steps:
+        runs-on: ubuntu-latest
+        steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Run installation of dependencies commands
@@ -51,8 +51,8 @@ jobs:
       - name: Run unit testing command
         run: npm test
   
-    runs-on: ubuntu-latest
-    steps:
+        runs-on: ubuntu-latest
+        steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Run installation of dependencies commands
