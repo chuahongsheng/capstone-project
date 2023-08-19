@@ -5,24 +5,44 @@ on:
   push:
     branches: [ main, "*" ]
 
+  workflow_dispatch: 
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+      environment:
+        description: 'Choose an enviroment'
+        type: environment
+        required: true
+
 jobs:
-  pre-deploy:
+  development:
+    name: Development
     runs-on: ubuntu-latest
     steps:
       - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
 
-  install-dependencies:
+  
     runs-on: ubuntu-latest
-    needs: pre-deploy
+    needs: development
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Run installation of dependencies commands
         run: npm install
 
-  unit-testing:
+  
     runs-on: ubuntu-latest
-    needs: install-dependencies
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -31,9 +51,7 @@ jobs:
       - name: Run unit testing command
         run: npm test
   
-  package-scan:
     runs-on: ubuntu-latest
-    needs: unit-testing
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -44,7 +62,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: package-scan
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
