@@ -25,7 +25,7 @@ on:
         type: environment
         required: true
 
-  jobs:
+jobs:
     development:
         name: Development
         runs-on: ubuntu-latest
