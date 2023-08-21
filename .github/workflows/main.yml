@@ -7,19 +7,7 @@ on:
 
   workflow_dispatch: 
     inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
-      tags:
-        description: 'Test scenario tags'
-        required: false
-        type: boolean
+      
       environment:
         description: 'Choose an enviroment'
         type: environment
@@ -60,19 +48,41 @@ jobs:
       - name: Run audit
         run: npm audit
 
-deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      - name: Zip artifact for deployment
+        run: |
+            cd dist
+            zip release.zip ./* -r
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-app            
+          path: ./dist/release.zip  
+
+    ReuseableMatrixJobForDeployment:
+      needs: development
+      strategy:
+        fail-fast: true
+        matrix:
+          target: [Staging, Production ]
+      uses: ./.github/workflows/deployment.yml
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - name: serverless deploy
-      uses: serverless/github-action@v3.2
-      with:
-        args: deploy
-      env:
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        target-env: ${{ matrix.target }}
+      secrets: inherit
+
+#deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v3
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#    - run: npm ci
+#    - name: serverless deploy
+#      uses: serverless/github-action@v3.2
+#      with:
+#        args: deploy
+#      env:
+#        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
