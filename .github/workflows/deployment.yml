@@ -16,12 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.target-env }}
-      # url: ${{ steps.step_id.outputs.url_output }}
+
 
     steps:
       - run: echo "🎉 target evn ${{ inputs.target-env}}"
       - run: echo "🎉 target evn inputs.target-env"
-      - run: echo "💡 get azure webapp name from secrets ${{ secrets.AZURE_WEBAPP_SERVICE_NAME }}"
       - run: echo "🍏 is Staging  ${{ inputs.target-env }} == 'Staging'"
       - run: echo "🐧 is Prod  ${{ inputs.target-env }} == 'Production'"
 
@@ -38,7 +37,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
           AWS_REGION: ap-southeast-1
- 
 
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -58,7 +56,7 @@ jobs:
         if:  inputs.target-env == 'Production'
         needs: [Staging]
         id: deploy-to-webapp-prod
-      - run: aws s3 sync ./out s3://[bucket-name]   #Web Production
+      - run: aws s3 sync ./out s3://[bucket-name]   #Web Prod
         
 
           
