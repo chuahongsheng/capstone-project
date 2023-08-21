@@ -9,9 +9,10 @@ on:
     inputs:
       
       environment:
-        description: 'Choose an enviroment'
+        description: 'Choose an enviroment to deploy'
         type: environment
         required: true
+        default: 'staging'
 
 jobs:
     development:
