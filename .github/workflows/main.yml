@@ -65,7 +65,7 @@ jobs:
         fail-fast: true
         matrix:
           target: [Staging, Production ]
-      uses: chuahongsheng/capstone-project/.github/workflows/deployment.yml
+      uses: ./.github/workflows/deployment.yml
       with:
         target-env: ${{ matrix.target }}
       secrets: inherit
