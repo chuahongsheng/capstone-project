@@ -45,9 +45,6 @@ jobs:
         with:
           name: web-app
 
-      - name: unzip artifact for deployment
-        run: unzip release.zip
-
       - name: "Deploy to AWS Stag WebApp"
         if:  inputs.target-env == 'Staging'
         id: deploy-to-webapp-staging
