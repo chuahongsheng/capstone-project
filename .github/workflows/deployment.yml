@@ -23,7 +23,23 @@ jobs:
       - run: echo "🎉 target evn inputs.target-env"
       - run: echo "🍏 is Staging  ${{ inputs.target-env }} == 'Staging'"
       - run: echo "🐧 is Prod  ${{ inputs.target-env }} == 'Production'"
+      
           #add CI
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+
+        name: Configure AWS Credentials
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+          AWS_REGION: ap-southeast-1
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
