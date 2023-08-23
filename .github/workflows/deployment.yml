@@ -23,7 +23,7 @@ jobs:
       - run: echo "🎉 target evn inputs.target-env"
       - run: echo "🍏 is Staging  ${{ inputs.target-env }} == 'Staging'"
       - run: echo "🐧 is Prod  ${{ inputs.target-env }} == 'Production'"
-
+          #add CI
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
