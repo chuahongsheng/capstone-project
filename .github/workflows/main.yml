@@ -42,15 +42,14 @@ jobs:
           run: npm audit
 
         - name: Zip artifact for deployment
-          run: |
-            cd dist
+          run:          
             zip release.zip ./* -r
 
         - name: Upload artifact for deployment job
           uses: actions/upload-artifact@v3
           with:
             name: web-app            
-            path: ./dist/release.zip  
+            path: release.zip  
 
     ReuseableMatrixJobForDeployment:
       needs: development
