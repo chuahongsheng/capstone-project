@@ -20,7 +20,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - run: echo "The job is automatically triggered by a ${{ github.event_name }} event."
-        
           runs-on: ubuntu-latest
           steps:
         - name: Check out repository code
