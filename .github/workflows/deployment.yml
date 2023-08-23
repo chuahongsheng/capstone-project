@@ -35,14 +35,14 @@ jobs:
       - name: "Deploy to AWS Stag WebApp"
         if:  inputs.target-env == 'Staging'
         id: deploy-to-webapp-staging
-      - run: aws s3 sync ./out s3://[cohort2.serverless.deploys]  #Web Staging
+        run: aws s3 sync ./out s3://[cohort2.serverless.deploys]  #Web Staging
         
 
       - name: "Deploy to AWS Prod WebApp"
         if:  inputs.target-env == 'Production'
         needs: [Staging]
         id: deploy-to-webapp-prod
-      - run: aws s3 sync ./out s3://[hs-trigger-bucket]   #Web Prod
+        run: aws s3 sync ./out s3://[hs-trigger-bucket]   #Web Prod
         
 
           
